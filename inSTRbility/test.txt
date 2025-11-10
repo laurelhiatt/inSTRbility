@@ -1,0 +1,1 @@
+locus_id	fail_code	zygosity	phased_on	read_index	read_start_pos	read_end_pos	allele_length	sequence	avg_basequal	haplotag

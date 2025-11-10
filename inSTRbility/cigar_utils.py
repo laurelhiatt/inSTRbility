@@ -11,7 +11,7 @@ def get_substituion_positons(ref, query):
     Returns the indices of the substitution positions between the reference and query sequences.
     Args:
         ref (str): Reference sequence
-        query (str): Query sequence 
+        query (str): Query sequence
     Returns:
         list: List of indices where substitutions occur
     """
@@ -19,12 +19,12 @@ def get_substituion_positons(ref, query):
     if '=' in query:
         array = np.frombuffer(query.encode(), dtype=np.byte)
         substitution_indices = np.where(array != ord('='))[0]
-        
+
     else:
         array1 = np.frombuffer(ref.encode(), dtype=np.byte)
         array2 = np.frombuffer(query.encode(), dtype=np.byte)
         substitution_indices = np.where(array1 != array2)[0]
-        
+
     return substitution_indices.tolist()
 
 
@@ -109,9 +109,9 @@ def parse_cigar(read_index, read, loci_keys, loci_coords, read_loci_info, homopo
                     else:
                         SNPS[rpos+sub_pos]['COV'] += 1
                         SNPS[rpos+sub_pos]['Q'][read_index] = Qval
-                        if sub_nuc in SNPS[rpos+sub_pos]: 
+                        if sub_nuc in SNPS[rpos+sub_pos]:
                             SNPS[rpos + sub_pos][sub_nuc].add(read_index)
-                            
+
                         else: SNPS[rpos + sub_pos][sub_nuc] = { read_index }
 
             qpos += match_length; rpos += match_length
@@ -136,9 +136,9 @@ def parse_cigar(read_index, read, loci_keys, loci_coords, read_loci_info, homopo
                     else:
                         SNPS[rpos + pos]['COV'] += 1
                         SNPS[rpos + pos]['Q'][read_index] = Qval
-                        if sub_nuc in SNPS[rpos + pos]: 
+                        if sub_nuc in SNPS[rpos + pos]:
                             SNPS[rpos + pos][sub_nuc].add(read_index)
-                            
+
                         else: SNPS[rpos + pos][sub_nuc] = {read_index}
             qpos += substitution_length; rpos += substitution_length
             repeat_index += match_jump(rpos, qpos, substitution_length, repeat_index, loci_keys, loci_coords, read_loci_info)
@@ -149,7 +149,7 @@ def parse_cigar(read_index, read, loci_keys, loci_coords, read_loci_info, homopo
             else: qpos=0
             MD_tag = read.get_tag('MD')
             parse_mdtag(MD_tag, qpos, read.reference_start, READ_VARS, SNPS, read_index,
-                        read.query_qualitites, read.query_Sequence, SORT_SNPS, insertion_point)
+                        read.query_qualities, read.query_sequence, SORT_SNPS, insertion_point)
 
     for idx, loc_key in enumerate(loci_keys):
         spos = read_loci_info[loc_key]['range'][0]
