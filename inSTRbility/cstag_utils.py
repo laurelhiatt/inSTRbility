@@ -13,12 +13,12 @@ def parse_cstag(read_index, read, loci_keys, loci_coords, read_loci_variations,
 
     # CS tag operations set
     operations = {':', '-', '+', '*', '=', '~'}
-    
+
     read_start = read.reference_start
     rpos = read.reference_start   # NOTE: The coordinates are 1 based in SAM; pysam uses 0 based coordinates.
     qpos = 0            # starts from 0 the sub string the read sequence in python
 
-    # stores the each locus information in this read 
+    # stores the each locus information in this read
     loci_info = {}
     for key in loci_keys:
         loci_info[key] = { 'range': [0,0], 'flank_range': [0, 0], 'tracked': False, 'flank_tracked': [False, False] }
@@ -50,7 +50,7 @@ def parse_cstag(read_index, read, loci_keys, loci_coords, read_loci_variations,
             qpos += match_len; rpos += match_len
             repeat_index += match_jump(rpos, qpos, match_len, repeat_index, loci_coords, loci_keys, loci_info)
 
-        elif cs_tag[i] == '=':      # sequence match in long CS is followed by nucs which are matching       
+        elif cs_tag[i] == '=':      # sequence match in long CS is followed by nucs which are matching
             match_len = 0
             while i < cs_len and cs_tag[i] not in operations:
                 match_len += 1; i += 1
@@ -64,15 +64,15 @@ def parse_cstag(read_index, read, loci_keys, loci_coords, read_loci_variations,
 
             if not haploid:
                 base_phredQ = read.query_qualities[qpos]
-                READ_VARS[read_index]['snps'].add(rpos)
-                
+                READ_VARS[read_index]['X'].add(rpos)
+
                 if rpos not in SNPS:
-                    SNPS[rpos] = { 'C': 1, sub_nuc: {read_index}, 'Q': { read_index: base_phredQ } }
+                    SNPS[rpos] = { 'COV': 1, sub_nuc: {read_index}, 'Q': { read_index: base_phredQ } }
                     bisect.insort(SORT_SNPS, rpos)
                 else:
-                    SNPS[rpos]['C'] += 1
+                    SNPS[rpos]['COV'] += 1
                     SNPS[rpos]['Q'][read_index] = base_phredQ
-                    if sub_nuc in SNPS[rpos]: 
+                    if sub_nuc in SNPS[rpos]:
                         SNPS[rpos][sub_nuc].add(read_index)
                     else: SNPS[rpos][sub_nuc] = {read_index}
 
