@@ -43,7 +43,7 @@ def parse_args():
     optional.add_argument('--contigs', nargs='+', help='Contigs to get genotyped [chr1 chr12 chr22 ..]. If not mentioned every contigs in the region file will be genotyped.')
     optional.add_argument('--flank',   type=int,  metavar='<INT>', default=50,  help='Length of the flanking region (in base pairs) to search for indels with a repeat in it. [default: 10]')
     optional.add_argument('--num-hpreads',  type=int,  metavar='<INT>', default=5,   help='Minimum number of reads supporting a haplotype to be considered for phasing. [default: 6]')
-    optional.add_argument('--pure-stretch', action='store_true', dest='pure_stretch', help='Looking at variations only at pure stretches of the repeat. [default: False]')
+    optional.add_argument('--pure-stretch', action='store_false', dest='pure_stretch', help='Looking at variations only at pure stretches of the repeat. [default: True]')
 
     optional.add_argument('--haplotag', type=str, metavar='<STR>', default=None, help='use haplotagged information for phasing. eg: [HP]. [default: None]')
     optional.add_argument('--karyotype', nargs='+', help='karyotype of the samples [XY XX]')
